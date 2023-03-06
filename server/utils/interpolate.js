@@ -6,7 +6,7 @@ const interpolate = ( str, data = {} ) => {
   } );
 
   // Replace any remaining values with an empty string.
-  str = str.replace( new RegExp( `{(.*)}`, 'g' ), '' );
+  str = str.replace( new RegExp( `{[A-Za-z0-9-_.~]+}`, 'g' ), '' ).trim();
 
   return str;
 };

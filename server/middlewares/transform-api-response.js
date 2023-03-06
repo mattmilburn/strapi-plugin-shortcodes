@@ -3,19 +3,20 @@
 const has = require( 'lodash/has' );
 const head = require( 'lodash/head' );
 const isArray = require( 'lodash/isArray' );
+const isString = require( 'lodash/isString' );
 
-const { getService, isApiRequest } = require( '../utils' );
+const { getService, interpolate, isApiRequest } = require( '../utils' );
 
 // Transform function which is used to transform the response object.
 const transform = ( data, shortcodes ) => {
   // Single entry.
   if ( has( data, 'attributes' ) ) {
-    return transform( data.attributes );
+    return transform( data.attributes, shortcodes );
   }
 
   // Collection of entries.
   if ( isArray( data ) && data.length && has( head( data ), 'attributes' ) ) {
-    return data.map( item => transform( item ) );
+    return data.map( item => transform( item, shortcodes ) );
   }
 
   // Loop through properties.
@@ -26,16 +27,18 @@ const transform = ( data, shortcodes ) => {
 
     // Single component.
     if ( has( value, 'id' ) ) {
-      data[ key ] = transform( value );
+      data[ key ] = transform( value, shortcodes );
     }
 
     // Repeatable component or dynamic zone.
     if ( isArray( value ) && has( head( value ), 'id' ) ) {
-      data[ key ] = value.map( component => transform( component ) );
+      data[ key ] = value.map( component => transform( component, shortcodes ) );
     }
 
-    // Finally, replace the shortcode.
-    data[ key ] = interpolate( data[ key ], shortcodes );
+    // Finally, replace the shortcode in string values.
+    if ( isString( value ) ) {
+      data[ key ] = interpolate( value, shortcodes );
+    }
   } );
 
   return data;
@@ -50,7 +53,7 @@ module.exports = async ( { strapi } ) => {
       ! ctx.body ||
       ! ctx.body.data ||
       ! isApiRequest( ctx )
-    ) ) {
+    ) {
       return;
     }
 

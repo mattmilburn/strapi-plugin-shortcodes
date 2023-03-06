@@ -4,7 +4,7 @@ module.exports = {
   kind: 'collectionType',
   collectionName: 'shortcodes',
   info: {
-    displayName: 'Shortcodes',
+    displayName: 'Shortcode',
     singularName: 'shortcode',
     pluralName: 'shortcodes',
     tableName: 'shortcodes',
@@ -12,7 +12,14 @@ module.exports = {
   options: {
     draftAndPublish: false,
   },
-  pluginOptions: {},
+  pluginOptions: {
+    'content-manager': {
+      visible: true,
+    },
+    'content-type-builder': {
+      visible: true,
+    },
+  },
   attributes: {
     shortcode: {
       type: 'uid',

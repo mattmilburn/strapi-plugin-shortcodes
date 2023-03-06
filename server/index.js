@@ -1,16 +1,16 @@
 'use strict';
 
+const bootstrap = require( './bootstrap' );
 const contentTypes = require( './content-types' );
-const middlewares = require( './middlewares' );
 const services = require( './services' );
 
 module.exports = {
-  // bootstrap() {},
+  bootstrap,
   // config,
   contentTypes,
   // controllers: {},
   // destroy() {},
-  middlewares,
+  // middlewares: {},
   // policies: {},
   // register() {},
   // routes: {},

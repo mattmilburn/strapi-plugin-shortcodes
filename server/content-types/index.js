@@ -1,7 +1,7 @@
 'use strict';
 
-const shortcodes = require( './shortcodes' );
+const shortcode = require( './shortcode' );
 
 module.exports = {
-  'shortcodes': { schema: shortcodes },
+  'shortcode': { schema: shortcode },
 };
